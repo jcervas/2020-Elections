@@ -82,7 +82,7 @@ getCounties2020 <- function() {
 				if (column.i %in% c("trumpd", "bidenj")) next
 					othervotes.tmp <- othervotes.tmp + unname(unlist(county.tmp$results[i]))
 			}
-				counties.tmp[[j]] <- data.frame(name= county.tmp$name, dem=county.tmp$results$bidenj, rep=county.tmp$results$trumpd, other=othervotes.tmp, totalvotes=county.tmp$votes, remainingvote=paste0(100 - county.tmp$eevp,"%"))
+				counties.tmp[[j]] <- data.frame(st= pres2020$data$races$state_name[j], name= county.tmp$name, dem=county.tmp$results$bidenj, rep=county.tmp$results$trumpd, other=othervotes.tmp, totalvotes=county.tmp$votes, remainingvote=paste0(100 - county.tmp$eevp,"%"))
 		}
 		return(do.call(rbind, counties.tmp))
 }
