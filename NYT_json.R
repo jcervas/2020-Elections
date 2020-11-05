@@ -32,11 +32,24 @@ getHouse2020 <- function() {
 			}
 		}
 	}
-
-	house.2020 <- data.frame(st=house2020$data$races$state_name, dist=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes)
-
-	return(house.2020)
+	return(data.frame(st=house2020$data$races$state_name, dist=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes))
 }
 
+GetPresMargin <- function(STATE = STATE) {
+  STATE <- gsub(" ", "-", STATE)
+  DC <- jsonlite::fromJSON(paste0("https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/race-page/", tolower(STATE), "/president.json"), simplifyDataFrame = F)
+  DC$data$races[[1]]$votes
+  Remaining <- DC$data$races[[1]]$tot_exp_vote - DC$data$races[[1]]$votes
+  C1 <- DC$data$races[[1]]$candidates[[1]]$votes
+  C2 <- DC$data$races[[1]]$candidates[[2]]$votes
+  CurrentLead <- C1-C2
+  Margin <- (Remaining - CurrentLead)/2/Remaining
+  print(paste0(DC$data$races[[1]]$candidates[[1]]$last_name, " leads with ", CurrentLead, " votes."))
+  print(paste0(DC$data$races[[1]]$candidates[[1]]$last_name, " needs ", round(Margin, 3)*100, " percent of the remaining ballots to hold onto the lead."))
+  print(paste0("There are ", Remaining, " estimated ballots outstanding, which is ", round(Remaining/DC$data$races[[1]]$tot_exp_vote*100, 2), " percent of the total ballots."))
+}
+
+
+GetPresMargin()
 
 write.csv(getHouse2020(), "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
