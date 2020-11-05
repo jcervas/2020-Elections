@@ -35,7 +35,8 @@ getHouse2020 <- function() {
 	return(data.frame(st=house2020$data$races$state_name, dist=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes))
 }
 
-GetPresMargin <- function(STATE = STATE) {
+GetPresMargin <- function(STATE = NA) { #Contribution from Nathan Cisneros
+	if (is.na(STATE)) return("Please list a state")
   STATE <- gsub(" ", "-", STATE)
   DC <- jsonlite::fromJSON(paste0("https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/race-page/", tolower(STATE), "/president.json"), simplifyDataFrame = F)
   DC$data$races[[1]]$votes
@@ -50,6 +51,6 @@ GetPresMargin <- function(STATE = STATE) {
 }
 
 
-GetPresMargin()
+GetPresMargin("Nevada")
 
 write.csv(getHouse2020(), "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
