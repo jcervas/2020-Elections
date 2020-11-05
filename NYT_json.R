@@ -71,6 +71,23 @@ getPresidential2020 <- function() {
 
 }
 
+getCounties2020 <- function() {
+		pres2020 <- jsonlite::fromJSON("https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/national-map-page/national/president.json")
+		counties.tmp <- list()
+		for (j in 1:length(pres2020$data$races$counties)) {
+			county.tmp <- pres2020$data$races$counties[[j]]
+			othervotes.tmp <- rep(0, nrow(county.tmp$results))
+			for (i in 1:ncol(county.tmp$results)) {
+				column.i <- names(county.tmp$results[i])
+				if (column.i %in% c("trumpd", "bidenj")) next
+					othervotes.tmp <- othervotes.tmp + unname(unlist(county.tmp$results[i]))
+			}
+				counties.tmp[[j]] <- data.frame(name= county.tmp$name, dem=county.tmp$results$bidenj, rep=county.tmp$results$trumpd, other=othervotes.tmp, totalvotes=county.tmp$votes, remainingvote=paste0(100 - county.tmp$eevp,"%"))
+		}
+		return(do.call(rbind, counties.tmp))
+}
+getCounties2020()
+
 GetPresMargin("Nevada")
 
 
