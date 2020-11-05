@@ -39,4 +39,4 @@ getHouse2020 <- function() {
 }
 
 
-write.csv(house.2020, "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
+write.csv(getHouse2020(), "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
