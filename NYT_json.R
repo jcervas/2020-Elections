@@ -6,16 +6,28 @@ vote.order <- order(house2020$data$races$votes, decreasing=T)
 
 
 house2020.totalvotes <- data.frame(rank=1:435, totalvotes=house2020$data$races$votes[vote.order])
-rownames(house2020.totalvotes) <- paste(house2020$data$races$state_name[vote.order], house2020$data$races$seat[vote.order])
+race.name <- paste(house2020$data$races$state_name[vote.order], house2020$data$races$seat[vote.order])
+rownames(house2020.totalvotes) <- race.name
 house2020.totalvotes
 
 
-rep.votes <- list()
-dem.votes <- list()
+rep.votes <- rep(0,435)
+dem.votes <- rep(0,435)
+other.votes <- rep(0,435)
 for (j in 1:length(house2020$data$races$candidates)) {
-	for (i in 1:length(house2020$data$races$candidates[[j]]$party_id))
-		if (house2020$data$races$candidates[[j]]$party_id %in% "republican") rep.votes[[j]] <- house2020$data$races$candidates[[j]]$votes
-		if (house2020$data$races$candidates[[j]]$party_id %in% "democrat") dem.votes[[j]] <- house2020$data$races$candidates[[j]]$votes
+	race.votes.order <- order(house2020$data$races$candidates[[j]]$votes, decreasing=T)
+	othervotes.tmp <- 0
+		for (i in 1:length(house2020$data$races$candidates[[j]]$party_id)){
+			party.tmp <- house2020$data$races$candidates[[j]]$party_id[race.votes.order[i]]
+		
+		# if (length(house2020$data$races$candidates[[j]]$party_id %in% "republican") > 1) stop
+		if (party.tmp %in% "republican") rep.votes[j] <- house2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
+		if (party.tmp %in% "democrat") dem.votes[j] <- house2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
+		if (!party.tmp %in% c("democrat","republican")) {
+					othervotes.tmp <- othervotes.tmp + house2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
+					other.votes[j] <- othervotes.tmp
+		}
+	}
 }
 
-
+data.frame(st=house2020$data$races$state_name, dist=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes)
