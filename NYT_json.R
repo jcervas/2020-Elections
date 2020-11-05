@@ -30,4 +30,5 @@ for (j in 1:length(house2020$data$races$candidates)) {
 	}
 }
 
-data.frame(st=house2020$data$races$state_name, dist=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes)
+house.2020 <- data.frame(st=house2020$data$races$state_name, dist=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes)
+write.csv(house.2020, "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
