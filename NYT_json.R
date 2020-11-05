@@ -86,10 +86,12 @@ getCounties2020 <- function() {
 		}
 		return(do.call(rbind, counties.tmp))
 }
-getCounties2020()
+
+
+
 
 GetPresMargin("Nevada")
 
-
 write.csv(getPresidential2020(), "/Users/user/Google Drive/GitHub/2020-Elections/pres2020.csv", row.names=F)
 write.csv(getHouse2020(), "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
+write.csv(getCounties2020(), "/Users/user/Google Drive/GitHub/2020-Elections/counties2020.csv", row.names=F)
