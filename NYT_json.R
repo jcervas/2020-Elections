@@ -2,17 +2,14 @@
 
 getHouse2020 <- function() {
 	house2020 <- jsonlite::fromJSON("https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/national-map-page/national/house.json")
-
 	# str(house2020)
 
 	vote.order <- order(house2020$data$races$votes, decreasing=T)
 
-
-	house2020.totalvotes <- data.frame(rank=1:435, totalvotes=house2020$data$races$votes[vote.order])
-	race.name <- paste(house2020$data$races$state_name[vote.order], house2020$data$races$seat[vote.order])
-	rownames(house2020.totalvotes) <- race.name
-	house2020.totalvotes
-
+	# house2020.totalvotes <- data.frame(rank=1:435, totalvotes=house2020$data$races$votes[vote.order])
+	# race.name <- paste(house2020$data$races$state_name[vote.order], house2020$data$races$seat[vote.order])
+	# rownames(house2020.totalvotes) <- race.name
+	# house2020.totalvotes
 
 	rep.votes <- rep(0,435)
 	dem.votes <- rep(0,435)
@@ -51,6 +48,10 @@ GetPresMargin <- function(STATE = NA) { #Contribution from Nathan Cisneros
 }
 
 
-GetPresMargin("Nevada")
+getPresidential2020 <- function() {
+		pres2020 <- jsonlite::fromJSON("https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/national-map-page/national/president.json")
+		# str(pres2020)
+}
 
+GetPresMargin("Nevada")
 write.csv(getHouse2020(), "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
