@@ -28,7 +28,7 @@ getHouse2020 <- function() {
 			}
 		}
 	}
-	return(data.frame(st=house2020$data$races$state_name, dist=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes))
+	return(data.frame(st=house2020$data$races$state_name, dist=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes, remainingvote=paste0(100 - house2020$data$races$eevp,"%")))
 }
 
 GetPresMargin <- function(STATE = NA) { #Contribution from Nathan Cisneros
