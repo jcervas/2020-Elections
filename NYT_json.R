@@ -10,5 +10,12 @@ rownames(house2020.totalvotes) <- paste(house2020$data$races$state_name[vote.ord
 house2020.totalvotes
 
 
+rep.votes <- list()
+dem.votes <- list()
+for (j in 1:length(house2020$data$races$candidates)) {
+	for (i in 1:length(house2020$data$races$candidates[[j]]$party_id))
+		if (house2020$data$races$candidates[[j]]$party_id %in% "republican") rep.votes[[j]] <- house2020$data$races$candidates[[j]]$votes
+		if (house2020$data$races$candidates[[j]]$party_id %in% "democrat") dem.votes[[j]] <- house2020$data$races$candidates[[j]]$votes
+}
 
-house2020$data$races$candidates
+
