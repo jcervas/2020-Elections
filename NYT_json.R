@@ -28,7 +28,7 @@ getHouse2020 <- function() {
 			}
 		}
 	}
-	return(data.frame(st=house2020$data$races$state_name, dist=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes, remainingvote=paste0(100 - house2020$data$races$eevp,"%")))
+	return(data.frame(st=house2020$data$races$state_name, dist=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - house2020$data$races$eevp,"%")))
 }
 
 GetPresMargin <- function(STATE = NA) { #Contribution from Nathan Cisneros
@@ -67,7 +67,7 @@ getPresidential2020 <- function() {
 			}
 		}
 	}
-	return(data.frame(st=pres2020$data$races$state_name, ecvotes=pres2020$data$races$electoral_votes, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=pres2020$data$races$votes, remainingvote=paste0(100 - pres2020$data$races$eevp,"%")))
+	return(data.frame(st=pres2020$data$races$state_name, ecvotes=pres2020$data$races$electoral_votes, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=pres2020$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - pres2020$data$races$eevp,"%")))
 
 }
 
@@ -82,7 +82,7 @@ getCounties2020 <- function() {
 				if (column.i %in% c("trumpd", "bidenj")) next
 					othervotes.tmp <- othervotes.tmp + unname(unlist(county.tmp$results[i]))
 			}
-				counties.tmp[[j]] <- data.frame(st= pres2020$data$races$state_name[j], name= county.tmp$name, dem=county.tmp$results$bidenj, rep=county.tmp$results$trumpd, other=othervotes.tmp, totalvotes=county.tmp$votes, remainingvote=paste0(100 - county.tmp$eevp,"%"))
+				counties.tmp[[j]] <- data.frame(st= pres2020$data$races$state_name[j], name= county.tmp$name, dem=county.tmp$results$bidenj, rep=county.tmp$results$trumpd, other=othervotes.tmp, totalvotes=county.tmp$votes, margin=county.tmp$results$bidenj-county.tmp$results$trumpd, remainingvote=paste0(100 - county.tmp$eevp,"%"))
 		}
 		return(do.call(rbind, counties.tmp))
 }
