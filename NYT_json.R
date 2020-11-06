@@ -90,7 +90,9 @@ getCounties2020 <- function() {
 
 
 
-GetPresMargin("Nevada")
+GetPresMargin("arizona")
+GetPresMargin("pennsylvania")
+GetPresMargin("georgia")
 
 write.csv(getPresidential2020(), "/Users/user/Google Drive/GitHub/2020-Elections/pres2020.csv", row.names=F)
 write.csv(getHouse2020(), "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
