@@ -96,8 +96,6 @@ GetPresMargin("georgia")
 
 
 house <- getHouse2020()
-sum(house$dem)/(sum(house$dem)+sum(house$rep))
-
 
 write.csv(getPresidential2020(), "/Users/user/Google Drive/GitHub/2020-Elections/pres2020.csv", row.names=F)
 write.csv(getHouse2020(), "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
