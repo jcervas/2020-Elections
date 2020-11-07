@@ -28,7 +28,7 @@ getHouse2020 <- function() {
 			}
 		}
 	}
-	return(data.frame(state=house2020$data$races$state_name, distate=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - house2020$data$races$eevp,"%")))
+	return(data.frame(state=house2020$data$races$state_name, district=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - house2020$data$races$eevp,"%")))
 }
 
 GetPresMargin <- function(STATE = NA) { #Contribution from Nathan Cisneros
@@ -88,7 +88,8 @@ getCounties2020 <- function() {
 }
 
 
-
+fips <- read.csv("https://raw.githubusercontent.com/jcervas/Data/master/fips.csv")
+fips$fips <- as.character(sprintf("%02d", fips$fips))
 
 GetPresMargin("arizona")
 GetPresMargin("pennsylvania")
@@ -101,6 +102,20 @@ house.historic <- read.csv("https://raw.githubusercontent.com/jcervas/2020-Elect
 	hist.rep <- house.historic[house.historic$party %in% "republican",]
 	hist.other <- house.historic[!house.historic$party %in% c("democrat","republican"),]
 		hist.other <- aggregate(hist.other$candidatevotes, by=list(hist.other$year, hist.other$state, hist.other$district), FUN=sum)
+
+pres <- getPresidential2020()
+	two_party(sum(pres$dem),sum(pres$rep))
+
+
+house.pop.tmp <- jsonlite::fromJSON("https://api.census.gov/data/2019/acs/acs1?get=NAME,B01001_001E&for=congressional%20district:*&key=7865f31139b09e17c5865a59c240bdf07f9f44fd")
+colnames(house.pop.tmp) <- house.pop.tmp[1,]
+house.pop.tmp <- house.pop.tmp[-1,]
+house.pop <- merge(house.pop.tmp, fips, by.x="state", by.y="fips")
+colnames(house.pop) <- c("fips","NAME","pop","district","state","abv","geo")
+head(house.pop)
+merge(house,house.pop, by=c("state","district"))
+
+
 
 write.csv(getPresidential2020(), "/Users/user/Google Drive/GitHub/2020-Elections/pres2020.csv", row.names=F)
 write.csv(getHouse2020(), "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
