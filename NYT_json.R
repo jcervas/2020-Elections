@@ -112,10 +112,14 @@ colnames(house.pop.tmp) <- house.pop.tmp[1,]
 house.pop.tmp <- house.pop.tmp[-1,]
 house.pop <- merge(house.pop.tmp, fips, by.x="state", by.y="fips")
 colnames(house.pop) <- c("fips","NAME","pop","district","state","abv","geo")
+house.pop$district[house.pop$district %in% "00"] <- "01"
 head(house.pop)
-merge(house,house.pop, by=c("state","district"))
+head(house)
+house$district <- as.character(sprintf("%02d", house$district))
+house <- merge(house,house.pop, by=c("state","district"))
+house$turnout <- house$totalvotes/as.numeric(house$pop)
 
-
+house[order(house$turnout),]
 
 write.csv(getPresidential2020(), "/Users/user/Google Drive/GitHub/2020-Elections/pres2020.csv", row.names=F)
 write.csv(getHouse2020(), "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
