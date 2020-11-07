@@ -98,10 +98,20 @@ GetPresMargin("georgia")
 
 house <- getHouse2020()
 house.historic <- read.csv("https://raw.githubusercontent.com/jcervas/2020-Elections/main/1976-2018-house2.csv")
-	hist.dem <- house.historic[house.historic$party %in% "democrat",]
-	hist.rep <- house.historic[house.historic$party %in% "republican",]
+	hist.dem.tmp <- house.historic[house.historic$party %in% "democrat",]
+		hist.dem <- hist.dem.tmp[,c("year", "state", "district", "candidatevotes")]
+		colnames(hist.dem) <- c("year","state","district","dem")
+	hist.rep.tmp <- house.historic[house.historic$party %in% "republican",]
+		hist.rep <- hist.rep.tmp[,c("year", "state", "district", "candidatevotes")]
+		colnames(hist.rep) <- c("year","state","district","rep")
 	hist.other <- house.historic[!house.historic$party %in% c("democrat","republican"),]
 		hist.other <- aggregate(hist.other$candidatevotes, by=list(hist.other$year, hist.other$state, hist.other$district), FUN=sum)
+		colnames(hist.other) <- c("year","state","district","other")
+
+hist.house <- merge(hist.dem, hist.rep, by=c("year","state","district"), all=T)
+hist.house <- merge(hist.house, hist.other, by=c("year","state","district"), all=T)
+hist.house$totalvotes <- replaceNA(hist.house$dem) + replaceNA(hist.house$rep) + replaceNA(hist.house$other)
+hist.house[order(hist.house$totalvotes),]
 
 pres <- getPresidential2020()
 	two_party(sum(pres$dem),sum(pres$rep))
