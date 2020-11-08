@@ -52,6 +52,7 @@ getPresidential2020 <- function() {
 		# str(pres2020)
 	rep.votes <- rep(0,51)
 	dem.votes <- rep(0,51)
+	libertarian.votes <- rep(0,51)
 	other.votes <- rep(0,51)
 	for (j in 1:length(pres2020$data$races$candidates)) {
 		race.votes.order <- order(pres2020$data$races$candidates[[j]]$votes, decreasing=T)
@@ -61,13 +62,15 @@ getPresidential2020 <- function() {
 			
 			if (party.tmp %in% "republican") rep.votes[j] <- pres2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
 			if (party.tmp %in% "democrat") dem.votes[j] <- pres2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
-			if (!party.tmp %in% c("democrat","republican")) {
+			if (party.tmp %in% "libertarian") libertarian.votes[j] <- pres2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
+			
+			if (!party.tmp %in% c("democrat","republican","libertarian")) {
 						othervotes.tmp <- othervotes.tmp + pres2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
 						other.votes[j] <- othervotes.tmp
 			}
 		}
 	}
-	return(data.frame(state=pres2020$data$races$state_name, ecvotes=pres2020$data$races$electoral_votes, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=pres2020$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - pres2020$data$races$eevp,"%")))
+	return(data.frame(state=pres2020$data$races$state_name, ecvotes=pres2020$data$races$electoral_votes, dem=unlist(dem.votes), rep=unlist(rep.votes), lib=unlist(libertarian.votes), other=unlist(other.votes), totalvotes=pres2020$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - pres2020$data$races$eevp,"%")))
 
 }
 
