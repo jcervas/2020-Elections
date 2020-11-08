@@ -100,6 +100,32 @@ GetPresMargin("georgia")
 
 
 house <- getHouse2020()
+
+getMITpresdata <- function(x) {
+	historic <- read.csv(x)
+	historic <- historic[historic$writein %in% "FALSE",]
+		hist.dem.tmp <- historic[historic$party %in% "democrat",]
+			hist.dem <- hist.dem.tmp[,c("year", "state", "candidatevotes")]
+			colnames(hist.dem) <- c("year","state","dem")
+		hist.rep.tmp <- historic[historic$party %in% "republican",]
+			hist.rep <- hist.rep.tmp[,c("year", "state", "candidatevotes")]
+			colnames(hist.rep) <- c("year","state","rep")
+		hist.lib.tmp <- historic[historic$party %in% "libertarian",]
+			hist.lib <- hist.lib.tmp[,c("year", "state", "candidatevotes")]
+			colnames(hist.lib) <- c("year","state","lib")
+		hist.other <- historic[!historic$party %in% c("democrat","republican"),]
+			hist.other <- aggregate(hist.other$candidatevotes, by=list(hist.other$year, hist.other$state), FUN=sum)
+			colnames(hist.other) <- c("year","state","other")
+	hist.pres <- merge(hist.dem, hist.rep, by=c("year","state"), all=T)
+	hist.pres <- merge(hist.pres, hist.lib, by=c("year","state"), all=T)
+	hist.pres <- merge(hist.pres, hist.other, by=c("year","state"), all=T)
+	hist.pres$totalvotes <- replaceNA(hist.pres$dem) + replaceNA(hist.pres$rep) + replaceNA(hist.pres$lib) + replaceNA(hist.pres$other)
+	hist.pres[order(hist.pres$totalvotes),]
+			return(hist.pres)
+}
+write.csv(getMITpresdata("https://raw.githubusercontent.com/jcervas/Data/master/Elections/Presidential/1976-2016-president.csv"), "/Users/user/Google Drive/Data/Elections/Presidential/WIDE_1976-2016-president.csv")
+
+
 house.historic <- read.csv("https://raw.githubusercontent.com/jcervas/2020-Elections/main/1976-2018-house2.csv")
 	hist.dem.tmp <- house.historic[house.historic$party %in% "democrat",]
 		hist.dem <- hist.dem.tmp[,c("year", "state", "district", "candidatevotes")]
@@ -123,7 +149,8 @@ sum(pres$dem)-sum(pres$rep)
 
 pres.margin <- pres[order(abs(pres$margin)),]
 
-
+pres.margin[abs(pres.margin$margin)<pres.margin$lib,]
+pres.margin[abs(pres.margin$margin)<(pres.margin$lib+pres.margin$other),]
 
 house.pop.tmp <- jsonlite::fromJSON("https://api.census.gov/data/2019/acs/acs1?get=NAME,B01001_001E&for=congressional%20district:*&key=7865f31139b09e17c5865a59c240bdf07f9f44fd")
 colnames(house.pop.tmp) <- house.pop.tmp[1,]
