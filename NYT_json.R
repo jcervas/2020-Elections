@@ -118,6 +118,11 @@ hist.house[order(hist.house$totalvotes),]
 
 pres <- getPresidential2020()
 	two_party(sum(pres$dem),sum(pres$rep))
+sum(pres$lib)
+sum(pres$dem)-sum(pres$rep)
+
+pres.margin <- pres[order(abs(pres$margin)),]
+
 
 
 house.pop.tmp <- jsonlite::fromJSON("https://api.census.gov/data/2019/acs/acs1?get=NAME,B01001_001E&for=congressional%20district:*&key=7865f31139b09e17c5865a59c240bdf07f9f44fd")
