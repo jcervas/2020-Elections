@@ -114,16 +114,16 @@ getMITpresdata <- function(x) {
 			hist.lib <- hist.lib.tmp[,c("year", "state", "candidatevotes")]
 			colnames(hist.lib) <- c("year","state","lib")
 		hist.green.tmp <- historic[historic$party %in% "green",]
-			hist.green <- hist.reen.tmp[,c("year", "state", "candidatevotes")]
+			hist.green <- hist.green.tmp[,c("year", "state", "candidatevotes")]
 			colnames(hist.green) <- c("year","state","green")
-		hist.other <- historic[!historic$party %in% c("democrat","republican"),]
+		hist.other <- historic[!historic$party %in% c("democrat","republican", "libertarian","green"),]
 			hist.other <- aggregate(hist.other$candidatevotes, by=list(hist.other$year, hist.other$state), FUN=sum)
 			colnames(hist.other) <- c("year","state","other")
 	hist.pres <- merge(hist.dem, hist.rep, by=c("year","state"), all=T)
 	hist.pres <- merge(hist.pres, hist.lib, by=c("year","state"), all=T)
 	hist.pres <- merge(hist.pres, hist.green, by=c("year","state"), all=T)
 	hist.pres <- merge(hist.pres, hist.other, by=c("year","state"), all=T)
-	hist.pres$totalvotes <- replaceNA(hist.pres$dem) + replaceNA(hist.pres$rep) + replaceNA(hist.pres$lib) + replaceNA(hist.pres$other)
+	hist.pres$totalvotes <- replaceNA(hist.pres$dem) + replaceNA(hist.pres$rep) + replaceNA(hist.pres$lib) + replaceNA(hist.pres$green) + replaceNA(hist.pres$other)
 	hist.pres[order(hist.pres$totalvotes),]
 			return(hist.pres)
 }
