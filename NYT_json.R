@@ -96,12 +96,7 @@ getCounties2020 <- function() {
 fips <- read.csv("https://raw.githubusercontent.com/jcervas/Data/master/fips.csv")
 fips$fips <- as.character(sprintf("%02d", fips$fips))
 
-GetPresMargin("arizona")
-GetPresMargin("pennsylvania")
-GetPresMargin("georgia")
 
-
-house <- getHouse2020()
 
 getMITpresdata <- function(x) {
 	historic <- read.csv(x)
@@ -129,7 +124,9 @@ getMITpresdata <- function(x) {
 	hist.pres[order(hist.pres$totalvotes),]
 			return(hist.pres)
 }
-write.csv(getMITpresdata("https://raw.githubusercontent.com/jcervas/Data/master/Elections/Presidential/1976-2016-president.csv"), "/Users/user/Google Drive/Data/Elections/Presidential/WIDE_1976-2016-president.csv")
+
+pres.hist <- getMITpresdata("https://raw.githubusercontent.com/jcervas/Data/master/Elections/Presidential/1976-2016-president.csv")
+write.csv(pres.hist, "/Users/user/Google Drive/Data/Elections/Presidential/WIDE_1976-2016-president.csv")
 
 
 house.historic <- read.csv("https://raw.githubusercontent.com/jcervas/2020-Elections/main/1976-2018-house2.csv")
@@ -153,10 +150,25 @@ pres <- getPresidential2020()
 sum(pres$lib)
 sum(pres$dem)-sum(pres$rep)
 
-pres.margin <- pres[order(abs(pres$margin)),]
+pres.margin <- pres[order(abs(pres$margin/pres$totalvotes)),]
 
+data.frame(
+	margin=pres.margin$margin/pres.margin$totalvotes,
+	dem=percent(pres.margin$dem/pres.margin$totalvotes),
+	rep=pres.margin$rep/pres.margin$totalvotes,
+	lib=pres.margin$lib/pres.margin$totalvotes,
+	other=(pres.margin$other+pres.margin$green)/pres.margin$totalvotes)
 pres.margin[abs(pres.margin$margin)<pres.margin$lib,]
-pres.margin[abs(pres.margin$margin)<(pres.margin$lib+pres.margin$other),]
+pres.margin[abs(pres.margin$margin)<(pres.margin$lib+pres.margin$green+pres.margin$other),]
+
+GetPresMargin("arizona")
+GetPresMargin("pennsylvania")
+GetPresMargin("georgia")
+
+
+house <- getHouse2020()
+head(house)
+two_party(house$dem, house$rep)
 
 house.pop.tmp <- jsonlite::fromJSON("https://api.census.gov/data/2019/acs/acs1?get=NAME,B01001_001E&for=congressional%20district:*&key=7865f31139b09e17c5865a59c240bdf07f9f44fd")
 colnames(house.pop.tmp) <- house.pop.tmp[1,]
