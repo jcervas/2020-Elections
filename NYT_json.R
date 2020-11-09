@@ -168,7 +168,8 @@ GetPresMargin("georgia")
 
 house <- getHouse2020()
 head(house)
-two_party(house$dem, house$rep)
+sum(house$dem)
+sum(house$rep)
 
 house.pop.tmp <- jsonlite::fromJSON("https://api.census.gov/data/2019/acs/acs1?get=NAME,B01001_001E&for=congressional%20district:*&key=7865f31139b09e17c5865a59c240bdf07f9f44fd")
 colnames(house.pop.tmp) <- house.pop.tmp[1,]
