@@ -172,6 +172,14 @@ sum(house$dem)/(sum(house$dem)+sum(house$rep))
 sum(find.winner(two_party(house$dem,house$rep)), na.rm=T)/435
 house[order(abs(house$margin)),]
 
+# Single District State
+h.2020 <- house[house$state %in% c("Wyoming", "Vermont", "South Dakota", "North Dakota", "Montana", "Delaware", "Alaska"),]
+p.2020 <- pres[pres$state %in% c("Wyoming", "Vermont", "South Dakota", "North Dakota", "Montana", "Delaware", "Alaska"),]
+
+plot(default.unc(two_party(h.2020$dem, h.2020$rep)), default.unc(two_party(p.2020$dem, p.2020$rep)), xlab="Dem House 2020", ylab="Biden 2020")
+abline(0,1, lty=3)
+
+
 house.pop.tmp <- jsonlite::fromJSON("https://api.census.gov/data/2019/acs/acs1?get=NAME,B01001_001E&for=congressional%20district:*&key=7865f31139b09e17c5865a59c240bdf07f9f44fd")
 colnames(house.pop.tmp) <- house.pop.tmp[1,]
 house.pop.tmp <- house.pop.tmp[-1,]
