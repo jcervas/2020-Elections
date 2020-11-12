@@ -186,6 +186,6 @@ house$turnout <- house$totalvotes/as.numeric(house$pop)
 
 house[order(house$turnout),]
 
-write.csv(	, "/Users/user/Google Drive/GitHub/2020-Elections/pres2020.csv", row.names=F)
+write.csv(getPresidential2020(), "/Users/user/Google Drive/GitHub/2020-Elections/pres2020.csv", row.names=F)
 write.csv(getHouse2020(), "/Users/user/Google Drive/GitHub/2020-Elections/house2020.csv", row.names=F)
 write.csv(getCounties2020(), "/Users/user/Google Drive/GitHub/2020-Elections/counties2020.csv", row.names=F)
