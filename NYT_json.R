@@ -172,6 +172,11 @@ sum(house$dem)/(sum(house$dem)+sum(house$rep))
 sum(find.winner(two_party(house$dem,house$rep)), na.rm=T)/435
 house[order(abs(house$margin)),]
 
+# Michigan and Wisconsin
+house.mich.2020 <- house[house$state %in% c("Michigan"),]
+house.wisc.2020 <- house[house$state %in% c("Wisconsin"),]
+house.nc.2020 <- house[house$state %in% c("North Carolina"),]
+
 # Single District State
 h.2020 <- house[house$state %in% c("Wyoming", "Vermont", "South Dakota", "North Dakota", "Montana", "Delaware", "Alaska"),]
 p.2020 <- pres[pres$state %in% c("Wyoming", "Vermont", "South Dakota", "North Dakota", "Montana", "Delaware", "Alaska"),]
