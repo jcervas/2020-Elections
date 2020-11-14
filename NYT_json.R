@@ -124,7 +124,7 @@ getMITpresdata <- function(x) {
 	hist.pres[order(hist.pres$totalvotes),]
 			return(hist.pres)
 }
-
+source("https://raw.githubusercontent.com/jcervas/R-Functions/main/GERRYfunctions.R")
 pres.hist <- getMITpresdata("https://raw.githubusercontent.com/jcervas/Data/master/Elections/Presidential/1976-2016-president.csv")
 write.csv(pres.hist, "/Users/user/Google Drive/Data/Elections/Presidential/WIDE_1976-2016-president.csv")
 
