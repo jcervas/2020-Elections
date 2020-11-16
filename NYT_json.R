@@ -176,6 +176,10 @@ house[order(abs(house$margin)),]
 house.mich.2020 <- house[house$state %in% c("Michigan"),]
 house.wisc.2020 <- house[house$state %in% c("Wisconsin"),]
 house.nc.2020 <- house[house$state %in% c("North Carolina"),]
+nc <- house.nc.2020[house.nc.2020$district %in% c("2", "13"),]
+sum(nc$dem)
+sum(nc$rep)
+
 
 # Single District State
 h.2020 <- house[house$state %in% c("Wyoming", "Vermont", "South Dakota", "North Dakota", "Montana", "Delaware", "Alaska"),]
