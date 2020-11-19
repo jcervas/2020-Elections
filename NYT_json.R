@@ -72,7 +72,7 @@ getPresidential2020 <- function() {
 			}
 		}
 	}
-	return(data.frame(state=pres2020$data$races$state_name, ecvotes=pres2020$data$races$electoral_votes, dem=unlist(dem.votes), rep=unlist(rep.votes), lib=unlist(libertarian.votes), green=unlist(green.votes), other=unlist(other.votes), totalvotes=pres2020$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - pres2020$data$races$eevp,"%")))
+	return(data.frame(year=2020, state=pres2020$data$races$state_name, ecvotes=pres2020$data$races$electoral_votes, dem=unlist(dem.votes), rep=unlist(rep.votes), lib=unlist(libertarian.votes), green=unlist(green.votes), other=unlist(other.votes), totalvotes=pres2020$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - pres2020$data$races$eevp,"%")))
 
 }
 
