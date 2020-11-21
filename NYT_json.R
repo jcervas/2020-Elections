@@ -170,9 +170,11 @@ GetPresMargin("georgia")
 
 house <- getHouse2020()
 head(house)
+sum(house$dem)
+sum(house$rep)
 sum(house$dem)/(sum(house$dem)+sum(house$rep))
 sum(find.winner(two_party(house$dem,house$rep)), na.rm=T)/435
-house[order(abs(house$margin)),]
+house[order(abs(house$margin), decreasing=T),]
 
 # Michigan and Wisconsin
 house.mich.2020 <- house[house$state %in% c("Michigan"),]
