@@ -199,6 +199,13 @@ sum(house$dem)/(sum(house$dem)+sum(house$rep))
 sum(find.winner(two_party(house$dem,house$rep)), na.rm=T)/435
 house[order(abs(house$margin), decreasing=T),]
 
+sen <- getSenate2020()
+sum(sen$dem)
+sum(sen$rep)
+sum(sen$dem)/(sum(sen$dem)+sum(sen$rep))
+sum(find.winner(two_party(sen$dem,sen$rep)), na.rm=T)/35
+
+
 # Michigan and Wisconsin
 house.mich.2020 <- house[house$state %in% c("Michigan"),]
 house.wisc.2020 <- house[house$state %in% c("Wisconsin"),]
