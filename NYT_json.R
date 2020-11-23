@@ -1,5 +1,4 @@
 
-
 getHouse2020 <- function() {
 	house2020 <- jsonlite::fromJSON("https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/national-map-page/national/house.json")
 	# str(house2020)
@@ -29,6 +28,30 @@ getHouse2020 <- function() {
 		}
 	}
 	return(data.frame(state=house2020$data$races$state_name, district=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - house2020$data$races$eevp,"%")))
+}
+
+getSenate2020 <- function() {
+	data <- jsonlite::fromJSON("https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/national-map-page/national/senate.json")
+	races <- length(data$data$races$candidates)
+	rep.votes <- rep(0,races)
+	dem.votes <- rep(0,races)
+	other.votes <- rep(0,races)
+	for (j in 1:races) {
+		race.votes.order <- order(data$data$races$candidates[[j]]$votes, decreasing=T)
+		othervotes.tmp <- 0
+			for (i in 1:length(data$data$races$candidates[[j]]$party_id)){
+				party.tmp <- data$data$races$candidates[[j]]$party_id[race.votes.order[i]]
+			
+			# if (length(data$data$races$candidates[[j]]$party_id %in% "republican") > 1) stop
+			if (party.tmp %in% "republican") rep.votes[j] <- data$data$races$candidates[[j]]$votes[race.votes.order[i]]
+			if (party.tmp %in% "democrat") dem.votes[j] <- data$data$races$candidates[[j]]$votes[race.votes.order[i]]
+			if (!party.tmp %in% c("democrat","republican")) {
+						othervotes.tmp <- othervotes.tmp + data$data$races$candidates[[j]]$votes[race.votes.order[i]]
+						other.votes[j] <- othervotes.tmp
+			}
+		}
+	}
+	return(data.frame(state=data$data$races$state_name, district=data$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=data$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - data$data$races$eevp,"%")))
 }
 
 GetPresMargin <- function(STATE = NA) { #Contribution from Nathan Cisneros
