@@ -151,7 +151,7 @@ getMITpresdata <- function(x) {
 }
 source("https://raw.githubusercontent.com/jcervas/R-Functions/main/GERRYfunctions.R")
 pres.hist <- getMITpresdata("https://raw.githubusercontent.com/jcervas/Data/master/Elections/Presidential/1976-2016-president.csv")
-write.csv(pres.hist, "/Users/user/Google Drive/Data/Elections/Presidential/WIDE_1976-2016-president.csv")
+# write.csv(pres.hist, "/Users/user/Google Drive/Data/Elections/Presidential/WIDE_1976-2016-president.csv")
 
 
 house.historic <- read.csv("https://raw.githubusercontent.com/jcervas/2020-Elections/main/1976-2018-house2.csv")
