@@ -11,6 +11,8 @@ getHouse2020 <- function() {
 
 	rep.votes <- rep(0,435)
 	dem.votes <- rep(0,435)
+	lib.votes <- rep(0,435)
+	gre.votes <- rep(0,435)
 	other.votes <- rep(0,435)
 	for (j in 1:length(house2020$data$races$candidates)) {
 		race.votes.order <- order(house2020$data$races$candidates[[j]]$votes, decreasing=T)
@@ -21,13 +23,15 @@ getHouse2020 <- function() {
 			# if (length(house2020$data$races$candidates[[j]]$party_id %in% "republican") > 1) stop
 			if (party.tmp %in% "republican") rep.votes[j] <- house2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
 			if (party.tmp %in% "democrat") dem.votes[j] <- house2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
-			if (!party.tmp %in% c("democrat","republican")) {
+			if (party.tmp %in% "libertarian") lib.votes[j] <- house2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
+			if (party.tmp %in% "green") gre.votes[j] <- house2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
+			if (!party.tmp %in% c("democrat","republican", "libertarian", "green")) {
 						othervotes.tmp <- othervotes.tmp + house2020$data$races$candidates[[j]]$votes[race.votes.order[i]]
 						other.votes[j] <- othervotes.tmp
 			}
 		}
 	}
-	return(data.frame(state=house2020$data$races$state_name, district=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - house2020$data$races$eevp,"%")))
+	return(data.frame(state=house2020$data$races$state_name, district=house2020$data$races$seat, dem=unlist(dem.votes), rep=unlist(rep.votes), lib=unlist(lib.votes), green=unlist(gre.votes), other=unlist(other.votes), totalvotes=house2020$data$races$votes, margin=unlist(dem.votes)-unlist(rep.votes), remainingvote=paste0(100 - house2020$data$races$eevp,"%")))
 }
 
 getSenate2020 <- function() {
